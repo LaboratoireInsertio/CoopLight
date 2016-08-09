@@ -1,0 +1,32 @@
+PRESENCE SENSORS
+
+
+PIR SENSOR (tested 3.7v, recommended)
+Parallax
+https://www.parallax.com/product/555-28027
+Abra
+https://abra-electronics.com/robotics-embedded-electronics/parallax-en/parallax-sensors/555-28027-parallax-pir-sensor-555-28027.html
+
+
+
+WIDE ANGLE (180°) PIR SENSOR
+SimplyTonics
+http://shopsimplytronics.com/wide-angle-pir-sensor/
+Abra
+https://abra-electronics.com/sensors/sensors-infrared-en/28032-wide-angle-pir-sensor-28032.html
+
+
+
+LONG RANGE INFRARED PROXIMITY SENSOR (tested 3.3v)
+Sharp
+http://www.sharpsma.com/optoelectronics/sensors/distance-measuring-sensors/GP2Y0A02YK0F
+Abra
+https://abra-electronics.com/robotics-embedded-electronics/parallax-en/parallax-sensors/gp2y0a02yk0f-infrared-proximity-sensor-long-range-gp2y0a02yk0f.html
+
+
+
+INFO
+
+https://learn.adafruit.com/pir-passive-infrared-proximity-motion-sensor/testing-a-pir?view=all#testing-a-pir
+
+

@@ -1,11 +1,16 @@
 // Tested on Arduino 1.6.9 (CC)
+// Adafruit HUZZAN not working on macOS Sierra
 
 #include <Adafruit_NeoPixel.h>
 
-// for changing between test modes
-#define TEST_MODE 2
+// for changing between output test modes
+#define OUTPUT_MODE 2
+// for changind between sensore modes:
+// 1 : IR Distance Sensor
+// 2 : PIR Motion Sensor
+#define SENSOR_MODE 1
 
-// Arduino pin number
+// NeoPixel pin number
 #define NEO_PIN 14
 // Number of LEDs in the NeoPixel strip, ring, etc
 #define NEO_NUM 7
@@ -28,6 +33,9 @@ void setup() {
   // Initialize serial communication with computer, for debugging
   Serial.begin(57600);
 
+  // Declare pin 12 (PIR sensor) as an input
+  pinMode(12, INPUT);
+
   // Initialize the strip object
   strip.begin();
   // Initialize all pixels to 'off'
@@ -36,16 +44,33 @@ void setup() {
 }
 
 void loop() {
-  // Read the input on analog pin 0:
-  int sensorValue = analogRead(A0);
+  boolean presence = false;
+  if (SENSOR_MODE == 1) {
+    // Read the input on analog pin 0:
+    int sensorValue = analogRead(A0);
 
-  if (TEST_MODE == 1) {
+    if (sensorValue > 500)
+      presence = true;
+    else
+      presence = false;
+
+  } else {
+    // Read the input on digital pin 12:
+    int sensorValue = digitalRead(12);
+
+    if (sensorValue == HIGH)
+      presence = true;
+    else
+      presence = false;
+  }
+
+  if (OUTPUT_MODE == 1) {
     // For slow transitions
     int desiredOutValue = 0;
     float desiredSpeed = 0;
 
     // if someone is detected
-    if (sensorValue > 500) {
+    if (presence) {
       // Set the output value to the maximum
       desiredOutValue = 255;
       desiredSpeed = 8.0;
@@ -74,7 +99,7 @@ void loop() {
     float desiredSpeed = 0;
 
     // if someone is detected
-    if (sensorValue > 500) {
+    if (presence) {
       // Set the output value to the maximum
       desiredOutValue = 255;
       desiredSpeed = 8.0;
@@ -100,7 +125,7 @@ void loop() {
   }
 
   // Print out the value you read
-  Serial.println(sensorValue, DEC);
+  Serial.println(presence, DEC);
   // Delay in between reads for stability
   delay(30);
 

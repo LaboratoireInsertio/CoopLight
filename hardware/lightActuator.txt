@@ -1,0 +1,17 @@
+LIGHT ACTUATOR
+
+
+NEOPIXEL JEWEL - 7 x 5050 RGBW LED (tested 3.7)
+Adafruit
+https://www.adafruit.com/products/2859
+Abra
+https://abra-electronics.com/opto-illumination/led-pixels/boards/2859-ada-neopixel-jewel-7-x-5050-rgbw-led-w-integrated-drivers-natural-white-4500k.html
+
+
+
+8x16 LED MATRIX FEATHERWING DISPLAY
+Adafruit
+https://www.adafruit.com/products/3149
+Abra
+https://abra-electronics.com/robotics-embedded-electronics/adafruit-feathers/3149-ada-adafruit-0.8-8x16-led-matrix-featherwing-display-kit-white.html
+
