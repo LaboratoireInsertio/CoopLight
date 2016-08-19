@@ -1,19 +1,23 @@
 // Tested on Arduino 1.6.9 (CC)
-// Adafruit HUZZAN not working on macOS Sierra
+// For instruction on how to get the Feather HUZZAH running check:
+// https://learn.adafruit.com/adafruit-feather-huzzah-esp8266/using-arduino-ide
 
 #include <Adafruit_NeoPixel.h>
 
 // for changing between output test modes
-#define OUTPUT_MODE 2
-// for changind between sensore modes:
+// 1 : Red lights with presence
+// 2 : White intensity changes with presence
+#define OUTPUT_MODE 1
+// for changing between sensore modes:
 // 1 : IR Distance Sensor
 // 2 : PIR Motion Sensor
-#define SENSOR_MODE 1
+#define SENSOR_MODE 2
 
 // NeoPixel pin number
 #define NEO_PIN 14
 // Number of LEDs in the NeoPixel strip, ring, etc
 #define NEO_NUM 7
+
 
 // Parameter 1 = number of pixels in strip
 // Parameter 2 = Arduino pin number (most are valid)
@@ -27,7 +31,8 @@
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(NEO_NUM, NEO_PIN, NEO_GRBW);
 
 //
-float outValue = 0.0;
+float outValueRed = 0.0;
+float outValueWhite = 0.0;
 
 void setup() {
   // Initialize serial communication with computer, for debugging
@@ -66,67 +71,72 @@ void loop() {
 
   if (OUTPUT_MODE == 1) {
     // For slow transitions
-    int desiredOutValue = 0;
-    float desiredSpeed = 0;
+    int desiredOutValueRed = 0;
+    float desiredSpeedRed = 0;
+    int desiredOutValueWhite = 0;
+    float desiredSpeedWhite = 0;
 
     // if someone is detected
     if (presence) {
       // Set the output value to the maximum
-      desiredOutValue = 255;
-      desiredSpeed = 8.0;
+      desiredOutValueRed = 255;
+      desiredSpeedRed = 8.0;
+      desiredOutValueWhite = 100;
+      desiredSpeedWhite = 64.0;
     } else {
       // set the output value to the minimum
-      desiredOutValue = 0;
-      desiredSpeed = 64.0;
+      desiredOutValueRed = 0;
+      desiredSpeedRed = 64.0;
+      desiredOutValueWhite = 255;
+      desiredSpeedWhite = 64.0;
     }
 
     // Smoothly transition towards the desired value at the desired speed,
     // the higher the speed value the slower the transition
-    float dif = desiredOutValue - outValue;
-    if (abs(dif) > 1.0) {
-      outValue = outValue + dif / desiredSpeed;
-    }
+    float difRed = desiredOutValueRed - outValueRed;
+    if (abs(difRed) > 1.0)
+      outValueRed = outValueRed + difRed / desiredSpeedRed;
+    float difWhite = desiredOutValueWhite - outValueWhite;
+    if (abs(difWhite) > 1.0)
+      outValueWhite = outValueWhite + difWhite / desiredSpeedWhite;
 
     // Change the pixels out values
-    for (uint16_t i = 0; i < strip.numPixels(); i++) {
-      strip.setPixelColor(i, outValue, 0, 0, 50);
-    }
+    for (uint16_t i = 0; i < strip.numPixels(); i++)
+      strip.setPixelColor(i, outValueRed, 0, 0, outValueWhite);
     strip.show();
 
   } else {
     // For slow transitions
-    int desiredOutValue = 0;
-    float desiredSpeed = 0;
+    int desiredOutValueWhite = 0;
+    float desiredSpeedWhite = 0;
 
     // if someone is detected
     if (presence) {
       // Set the output value to the maximum
-      desiredOutValue = 255;
-      desiredSpeed = 8.0;
+      desiredOutValueWhite = 255;
+      desiredSpeedWhite = 8.0;
     } else {
       // Set the output value to the minimum
-      desiredOutValue = 50;
-      desiredSpeed = 64.0;
+      desiredOutValueWhite = 50;
+      desiredSpeedWhite = 64.0;
     }
 
     // Smoothly transition towards the desired value at the desired speed,
     // the higher the speed value the slower the transition
-    float dif = desiredOutValue - outValue;
-    if (abs(dif) > 1.0) {
-      outValue = outValue + dif / desiredSpeed;
-    }
+    float difWhite = desiredOutValueWhite - outValueWhite;
+    if (abs(difWhite) > 1.0)
+      outValueWhite = outValueWhite + difWhite / desiredSpeedWhite;
 
     // Change the pixels out values
-    for (uint16_t i = 0; i < strip.numPixels(); i++) {
-      strip.setPixelColor(i, 0, 0, 0, outValue);
-    }
+    for (uint16_t i = 0; i < strip.numPixels(); i++)
+      strip.setPixelColor(i, 0, 0, 0, outValueWhite);
     strip.show();
 
   }
 
   // Print out the value you read
-  Serial.println(presence, DEC);
+  //Serial.println(presence, DEC);
   // Delay in between reads for stability
   delay(30);
-
 }
+
