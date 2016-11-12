@@ -317,7 +317,7 @@ void doSleep() {
         //Serial.print("Devi: ");
         //Serial.println(calSamples.stddev());
         photoThreshold = calSamples.mode() + 50;
-        
+
         samplesTaken = 0;
         isCalibrating = false;
       }
